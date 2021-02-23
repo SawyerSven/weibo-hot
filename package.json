@@ -1,0 +1,10 @@
+{
+  "name": "weibo-hot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "dayjs": "^1.10.4",
+    "node-fetch": "^2.6.1"
+  }
+}
