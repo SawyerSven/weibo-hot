@@ -2,27 +2,29 @@ name: schedule
 
 on:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "* * * * *"
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x, 15.x]
     steps:
-    - name: Clone repository
-      uses: actions/checkout@v2
+      - name: Clone repository
+        uses: actions/checkout@v2
 
-    - name: Setup Node
-      uses: actions/setup-node@master
-
-    - name: Run Code
-      run: |
-        git config --local user.email "kormondor@gmail.com"
-        git config --local user.name "Sawyersven"
-        git remote set-url origin https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}&github.com/${{github.repository}}
-        git pull --rebase
-        node main.js
-        git add .
-        git commit -m "update by github action"
-        git push
-        
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{matrix.node-version}}
+        run: |
+          git config --local user.email "kormondor@gmail.com"
+          git config --local user.name "Sawyersven"
+          git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git pull --rebase
+          node main.js
+          git add .
+          git commit -m "update by github action"
+          git push
